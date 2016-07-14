@@ -15,7 +15,7 @@ FetchAirlineDetails.prototype.getAirlineDetails = function() {
   return function(req, res, next) {
     self.callAirlinesApi(function(err, data) {
       if (err) {
-        res.status(400).send(err.message);
+        res.status(err.status || 400).send(err.message || 'Internal Server Error');
       }
       res.set({
         'Content-Type': 'application/json'
@@ -27,8 +27,11 @@ FetchAirlineDetails.prototype.getAirlineDetails = function() {
 
 FetchAirlineDetails.prototype.callAirlinesApi = function(cb) {
   request('http://node.locomote.com/code-task/airlines', function(error, response, body) {
-    if (error || response.statusCode !== 200) {
+    if (error) {
       return cb(error);
+    }
+    if (response.statusCode !== 200) {
+      return cb(new Error(body));
     }
     try {
       var airlinesData = JSON.parse(body);
@@ -45,6 +48,6 @@ returns a router
 */
 FetchAirlineDetails.prototype.setupRoutes = function() {
   var router = express.Router();
-  router.get('/airlines', this.getAirlineDetails(), handleErrors);
+  router.get('/airlines', this.getAirlineDetails());
   return router;
 }
