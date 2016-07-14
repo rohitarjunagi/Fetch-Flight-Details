@@ -20,26 +20,31 @@ FetchAirportDetails.prototype.getAirportDetails = function() {
     q = req.query.q;
     self.callAirportApi(q, function(err, data) {
       if (err) {
-        return res.status(400).send(err.message);
+        return res.status(err.status || 400).send(err.message || 'Internal Server Error');
       }
-      res.set({'Content-Type': 'application/json'});
+      res.set({
+        'Content-Type': 'application/json'
+      });
       res.status(200).send(data);
     });
   }
 }
 
 FetchAirportDetails.prototype.callAirportApi = function(airport, cb) {
-      request('http://node.locomote.com/code-task/airports?q='+airport, function(error, response, body) {
-      if (error || response.statusCode !== 200) {
-        return cb(error);
-      }
-      try {
-        var airportDetails = JSON.parse(body);
-      } catch(err) {
-        return cb(err);
-      }
-      cb(null, airportDetails);
-    })
+  request('http://node.locomote.com/code-task/airports?q=' + airport, function(error, response, body) {
+    if (error) {
+      return cb(error);
+    }
+    if (response.statusCode !== 200) {
+      return cb(new Error(body));
+    }
+    try {
+      var airportDetails = JSON.parse(body);
+    } catch (err) {
+      return cb(err);
+    }
+    cb(null, airportDetails);
+  })
 }
 
 /**
