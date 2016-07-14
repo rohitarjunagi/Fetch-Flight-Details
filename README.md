@@ -2501,5 +2501,55 @@ Here is the sample Response:
     }
   ]
 ]
+```
+- If the date is invalid, you'll get an error message saying Invalid date
+- If the From or To location does not specify an airport, you will get a list of airports to choose from:
 
-  ```
+Sample GET request : (http://localhost:3000/flight_search?date=2016-09-02&from=Kingsford Smith&to=New York)
+
+Sample Response :
+
+Please select an airport name from the below list for To location:
+
+[ { airportCode: 'JFK',
+    airportName: 'John F Kennedy Intl',
+    cityCode: 'NYC',
+    cityName: 'New York',
+    countryCode: 'US',
+    countryName: 'United States',
+    latitude: 40.639751,
+    longitude: -73.778925,
+    stateCode: 'NY',
+    timeZone: 'America/New_York' },
+  { airportCode: 'EWR',
+    airportName: 'Newark Liberty Intl Arpt',
+    cityCode: 'NYC',
+    cityName: 'New York',
+    countryCode: 'US',
+    countryName: 'United States',
+    latitude: 40.6925,
+    longitude: -74.168667,
+    stateCode: 'NJ',
+    timeZone: 'America/New_York' },
+  { airportCode: 'LGA',
+    airportName: 'New York La Guardia Arpt',
+    cityCode: 'NYC',
+    cityName: 'New York',
+    countryCode: 'US',
+    countryName: 'United States',
+    latitude: 40.777245,
+    longitude: -73.872608,
+    stateCode: 'NY',
+    timeZone: 'America/New_York' },
+  { airportCode: 'SWF',
+    airportName: 'New York Stewart International Arpt',
+    cityCode: 'SWF',
+    cityName: 'Newburgh',
+    countryCode: 'US',
+    countryName: 'United States',
+    latitude: 41.504094,
+    longitude: -74.104839,
+    stateCode: 'NY',
+    timeZone: 'America/New_York' } ]
+
+```
